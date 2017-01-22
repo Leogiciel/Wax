@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+    <ComponentGroup Id="PropertyNameComponents" Directory="INSTALLFOLDER">
+      
+      <Component>
+        <RegistryValue Root='HKLM' Key='SOFTWARE\Accel\[ProductName]'
+                       Name='PropertyName' Value='[PROPERTYNAME]'
+                       Type='string' />
+        <RemoveFolder Id='CleanupPropertyName' On='uninstall' />
+      </Component>
+      
+    </ComponentGroup>
+    
+    <CustomAction Id='SavePropertyNameCmdLineValue' Property='CMDLINE_PROPERTYNAME'
+                  Value='[PROPERTYNAME]' Execute='firstSequence' />
+    <CustomAction Id='SetPropertyNameFromCmdLineValue' Property='PROPERTYNAME'
+                  Value='[CMDLINE_PROPERTYNAME]' Execute='firstSequence' />
+    
+    <InstallUISequence>
+      <Custom Action='SavePropertyNameCmdLineValue' Before='AppSearch' />
+      <Custom Action='SetPropertyNameFromCmdLineValue' After='AppSearch'>
+        CMDLINE_PROPERTYNAME
+      </Custom>
+    </InstallUISequence>
+    <InstallExecuteSequence>
+      <Custom Action='SavePropertyNameCmdLineValue' Before='AppSearch' />
+      <Custom Action='SetPropertyNameFromCmdLineValue' After='AppSearch'>
+        CMDLINE_PROPERTYNAME
+      </Custom>
+    </InstallExecuteSequence>
+    
+	</Fragment>
+</Wix>
